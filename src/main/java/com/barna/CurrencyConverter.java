@@ -16,13 +16,18 @@ public class CurrencyConverter {
     private static final String EXCHANGERATE_API_URL = "https://v6.exchangerate-api.com/v6/";
 
     private final String appKey;
-//    private final String appId;
 
     public CurrencyConverter(String appKey) {
         this.appKey = appKey;
     }
 
+    public static void main(String[] args) {
+        System.out.println("Welcome to Barna's Forex!");
+    }
+
     public static Map<String, String> getAllCurrencies() {
+        /** Method to return all the available currencies got exchange
+         */
         String apiUrl = OPEN_EXCHANGE_API_URL + "currencies.json";
 
         HttpClient client = HttpClient.newHttpClient();
@@ -50,15 +55,19 @@ public class CurrencyConverter {
     }
 
     public Map<String, String> convertCurrency(String from, String to, double amount) {
+        /**
+         * Method to convert an amount of money from one currency to another
+         * @param from this is the base currency for the amount that will be converted
+         * @param from this is the base currency for the amount that will be converted
+         * @param amount this is the amount to be converted
+         * @return a map containing the converted amount of money and more details about
+         * the conversion including the rate used and when it was last updated
+         */
         // Building the API URL for currency conversion
         String apiUrl = EXCHANGERATE_API_URL + this.appKey + "/pair/";
-        System.out.println("from :   " + from);
-        System.out.println("to :   " + to);
 
         // Adding the app_id as a query parameter
         apiUrl += from + "/" + to + "/" + amount;
-
-        System.out.println("API URLLLLLLLLLL:   " + apiUrl);
 
         // Creating an HttpClient
         HttpClient client = HttpClient.newHttpClient();
@@ -80,7 +89,6 @@ public class CurrencyConverter {
             Map<String, String> responseMap = new HashMap<>();
             responseNode.fields().forEachRemaining(entry -> responseMap.put(entry.getKey(), entry.getValue().asText()));
 
-            // Parsing the response (assuming it's a double value, adjust as needed)
             return responseMap;
         } catch (Exception e) {
             // Handle exceptions (e.g., log or throw custom exception)
